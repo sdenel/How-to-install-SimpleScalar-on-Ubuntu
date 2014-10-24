@@ -4,7 +4,7 @@
 The following script intends to automate the installation process with Ubuntu. It has been tested with Ubuntu 12.04 and gcc 4.6. It may not resolve all the errors you will have to face: don't hesitate to contact me (see my resume) if you think the script has to be improved. If you can choose not to use this simulator, you may want to have a glance at other simulators like [SoCLib](http://www.soclib.fr/) or [gem5](http://www.m5sim.org/). A more exhaustive list is available at [wikipedia (en)](http://en.wikipedia.org/wiki/Computer_architecture_simulator#Implementations)
 ## The script ##
 Install-SimpleScalar.sh will create ~/SimpleScalar, and install SimpleScalar in it.
-Set the script as executable, run it, this it it! You may be able to compile your first program using a command-line such as: "`sslittle-na-sstrix-gcc -x c++ main.c`"
+Set the script as executable (chmod +x Install-SimpleScalar.sh), run it, this it it! You may be able to compile your first program using a command-line such as: "`sslittle-na-sstrix-gcc -x c++ main.c`"
 ## Miscellaneous ##
 
 - gcc 2.6 does not accept inline comments with C. A simple workaround is to compile your C-code as if it was a C++ code: use for instance `sslittle-na-sstrix-gcc -x c++ main.c`
