@@ -34,8 +34,8 @@ cd binutils-*
 
 # Avoiding:
 # vasprintf.c:48:3: error: invalid initializer
-sed -i -e "s/va_list ap = args;/va_list ap; va_copy(ap, args);/g" libiberty/vasprintf.c
 
+sed -i -e "s/va_list ap = args;/va_list ap; va_copy(ap, args);/g" libiberty/vasprintf.c
 # Avoiding:
 # vasprintf.c:35:7: erreur: conflicting types for ‘malloc’
 sed -i -e "s/char \*malloc ();/\/\/char \*malloc ();/g" libiberty/vasprintf.c
@@ -81,7 +81,6 @@ sed -i -e "s/sys_nerr/sys_nerr_2/g" libiberty/strerror.c
 sed -i -e "s/sys_errlist/sys_errlist_2/g" libiberty/strerror.c
 sed -i -e "s/NEED_sys_errPROTECTEDlist/NEED_sys_errlist/g" libiberty/strerror.c
 
-
 make all
 make install
 
@@ -123,7 +122,17 @@ sed -i -e "s/\*((void \*\*)__o->next_free)++ = ((void \*)datum);/\*((void \*\*)_
 
 # Avoiding:
 # sdbout.c:57:18: fatal error: syms.h: No such file or directory
+sed -i -e "s/#include <syms.h>/#include \"gsyms.h\"/g" sdbout.c
 
+# Avoiding:
+# cccp.c:194:14: error: conflicting types for ‘sys_errlist’
+sed -i -e "s/extern char \*sys_errlist\[\];/\/\/extern char \*sys_errlist\[\];/g" cccp.c
+# Avoiding:
+# ./cp/g++.c:90:14: error: conflicting types for ‘sys_errlist’
+sed -i -e "s/extern char \*sys_errlist\[\];/\/\/extern char \*sys_errlist\[\];/g" cp/g++.c
+# Avoiding: 
+# gcc.c:172:14: erreur: conflicting types for ‘sys_errlist’
+sed -i -e "s/extern char \*sys_errlist\[\];/\/\/extern char \*sys_errlist\[\];/g" gcc.c
 
 make LANGUAGES="c c++" CFLAGS="-O3" CC="gcc"
 # If you do not uncompress simpletools at the right place, You will face:
