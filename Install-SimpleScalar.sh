@@ -2,7 +2,7 @@
 # This script can be launch using the command-line "wget https://raw.githubusercontent.com/sdenel/How-to-install-SimpleScalar-on-Ubuntu/master/Install-SimpleScalar.sh && chmod +x Install-SimpleScalar.sh && ./Install-SimpleScalar.sh"
 
 # This is the only line requiring root permission
-sudo apt-get install bison flex gzip gcc-multilib ia32-libs zenity xdg-utils
+sudo apt-get install bison flex gzip gcc-multilib lib32z1 lib32ncurses5 lib32bz2-1.0 zenity xdg-utils
 
 # Will install SimpleScalar in ~/SimpleScalar
 export IDIR=$HOME"/SimpleScalar"
@@ -34,8 +34,8 @@ cd binutils-*
 
 # Avoiding:
 # vasprintf.c:48:3: error: invalid initializer
-
 sed -i -e "s/va_list ap = args;/va_list ap; va_copy(ap, args);/g" libiberty/vasprintf.c
+
 # Avoiding:
 # vasprintf.c:35:7: erreur: conflicting types for ‘malloc’
 sed -i -e "s/char \*malloc ();/\/\/char \*malloc ();/g" libiberty/vasprintf.c
@@ -66,6 +66,21 @@ sed -i -e "s/     va_dcl/\/\/     va_dcl/g" ld/ldmisc.c
 sed -i -e "s/     FILE \*fp;/\/\/     FILE \*fp;/g" ld/ldmisc.c
 sed -i -e "s/     char \*fmt;/\/\/     char \*fmt;/g" ld/ldmisc.c
 sed -i -e "s/vfinfo(fp, fmt, arg)/vfinfo(FILE \*fp, char \*fmt, va_list arg)/g" ld/ldmisc.c
+
+# Avoiding:
+# follows non-static declaration:
+#strerror.c:467:12: error: static declaration of ‘sys_nerr’ follows non-static declaration
+# static int sys_nerr;
+#            ^
+#In file included from /usr/include/stdio.h:853:0,
+#                 from strerror.c:35:
+#/usr/include/x86_64-linux-gnu/bits/sys_errlist.h:26:12: note: previous declaration of ‘sys_nerr’ was here
+# extern int sys_nerr;
+sed -i -e "s/NEED_sys_errlist/NEED_sys_errPROTECTEDlist/g" libiberty/strerror.c
+sed -i -e "s/sys_nerr/sys_nerr_2/g" libiberty/strerror.c
+sed -i -e "s/sys_errlist/sys_errlist_2/g" libiberty/strerror.c
+sed -i -e "s/NEED_sys_errPROTECTEDlist/NEED_sys_errlist/g" libiberty/strerror.c
+
 
 make all
 make install
@@ -108,17 +123,7 @@ sed -i -e "s/\*((void \*\*)__o->next_free)++ = ((void \*)datum);/\*((void \*\*)_
 
 # Avoiding:
 # sdbout.c:57:18: fatal error: syms.h: No such file or directory
-sed -i -e "s/#include <syms.h>/#include \"gsyms.h\"/g" sdbout.c
 
-# Avoiding:
-# cccp.c:194:14: error: conflicting types for ‘sys_errlist’
-sed -i -e "s/extern char \*sys_errlist\[\];/\/\/extern char \*sys_errlist\[\];/g" cccp.c
-# Avoiding:
-# ./cp/g++.c:90:14: error: conflicting types for ‘sys_errlist’
-sed -i -e "s/extern char \*sys_errlist\[\];/\/\/extern char \*sys_errlist\[\];/g" cp/g++.c
-# Avoiding: 
-# gcc.c:172:14: erreur: conflicting types for ‘sys_errlist’
-sed -i -e "s/extern char \*sys_errlist\[\];/\/\/extern char \*sys_errlist\[\];/g" gcc.c
 
 make LANGUAGES="c c++" CFLAGS="-O3" CC="gcc"
 # If you do not uncompress simpletools at the right place, You will face:
@@ -133,4 +138,3 @@ cd ../simplesim-*
 echo 'PATH='$PWD':$PATH' >> ~/.bashrc
 
 echo "This is it! Please restart your session in order to update your global variables."
-
