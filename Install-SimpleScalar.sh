@@ -2,7 +2,7 @@
 # This script can be launch using the command-line "wget https://raw.githubusercontent.com/sdenel/How-to-install-SimpleScalar-on-Ubuntu/master/Install-SimpleScalar.sh && chmod +x Install-SimpleScalar.sh && ./Install-SimpleScalar.sh"
 
 # This is the only line requiring root permission
-sudo apt-get install bison flex gzip gcc-multilib lib32z1 lib32ncurses5 lib32bz2-1.0 zenity xdg-utils
+sudo apt-get install bison flex gzip gcc-multilib lib32z1 lib32ncurses5 lib32bz2-1.0 zenity xdg-utils make
 
 # Will install SimpleScalar in ~/SimpleScalar
 export IDIR=$HOME"/SimpleScalar"
