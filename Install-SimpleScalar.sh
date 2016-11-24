@@ -37,14 +37,14 @@ cd binutils-*
 
 sed -i -e "s/va_list ap = args;/va_list ap; va_copy(ap, args);/g" libiberty/vasprintf.c
 # Avoiding:
-# vasprintf.c:35:7: erreur: conflicting types for ‘malloc’
+# vasprintf.c:35:7: error: conflicting types for ‘malloc’
 sed -i -e "s/char \*malloc ();/\/\/char \*malloc ();/g" libiberty/vasprintf.c
 
 # Avoiding:
 # ./ldlex.l:477:7: error: 'yy_current_buffer' undeclared (first use in this function)
 sed -i -e "s/yy_current_buffer/YY_CURRENT_BUFFER/g" ld/ldlex.l
 
-# avoiding errors like: /usr/lib/gcc/x86_64-linux-gnu/4.6/include/varargs.h:4:2: error: #error "GCC no longer implements <varargs.h>."
+# Avoiding errors like: /usr/lib/gcc/x86_64-linux-gnu/4.6/include/varargs.h:4:2: error: #error "GCC no longer implements <varargs.h>."
 # but also: ldmisc.c:318:31: error: expected expression before ‘char’
 sed -i -e "s/varargs.h/stdarg.h/g" ld/ldmisc.c
 
