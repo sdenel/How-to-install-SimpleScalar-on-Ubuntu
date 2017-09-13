@@ -98,7 +98,7 @@ cd ../simplesim*
 make config-pisa
 make
 # You can check that SimpleScalar (not the toolchain) works with the command-line:
-# ./sim-safe tests-alpha/bin/test-math
+# ./sim-safe tests-pisa/bin.little/test-math
 
 
 cd ../
